@@ -1,0 +1,25 @@
+spring:
+
+  application:
+    name: "hh-bot"
+
+  profiles:
+    active: local
+
+  datasource:
+    username: postgres
+    password: ${db-password}
+    url: jdbc:postgresql://localhost:5432/postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+hh:
+  base-url: "https://api.hh.ru"
+  header-name: "User-Agent"
+  header-value: "Hh-bot/1.0 (noleg867@gmail.com)"
+
+
+telegram:
+  token: ${secret-token}
