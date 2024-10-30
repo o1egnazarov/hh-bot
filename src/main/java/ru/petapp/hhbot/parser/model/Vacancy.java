@@ -1,13 +1,9 @@
-package ru.petapp.hhbot.dto;
+package ru.petapp.hhbot.parser.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
-
-import java.time.LocalDate;
 
 @Getter
 @ToString

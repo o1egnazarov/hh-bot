@@ -1,14 +1,12 @@
-package ru.petapp.hhbot.dto;
+package ru.petapp.hhbot.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
-
 @Getter
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Employer {
-    private String id;
-    private String name;
+public class Salary {
+    private String from;
+    private String to;
 }

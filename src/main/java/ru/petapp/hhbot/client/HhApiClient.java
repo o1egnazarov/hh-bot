@@ -1,4 +1,4 @@
-package ru.petapp.hhbot.service;
+package ru.petapp.hhbot.client;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 @Log4j2
 @Setter
-public class HhService {
+public class HhApiClient {
     @Value("${hh.base-url}")
     private String baseUrl;
 
@@ -25,7 +25,7 @@ public class HhService {
     public String getVacancyByUserRequirement(String text) {
         var url = UriComponentsBuilder.fromHttpUrl(baseUrl + "/vacancies")
                 .queryParam("text", text)
-             //   .queryParam("area", area)
+                //   .queryParam("area", area)
                 .queryParam("per_page", 5)
                 .build()
                 .toUriString();

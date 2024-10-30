@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-import ru.petapp.hhbot.dto.Vacancy;
-import ru.petapp.hhbot.dto.VacancyResponse;
+import ru.petapp.hhbot.parser.model.Vacancy;
+import ru.petapp.hhbot.parser.model.VacancyResponse;
 
 @Log4j2
 @Component

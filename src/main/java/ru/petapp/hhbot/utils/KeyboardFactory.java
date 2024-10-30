@@ -1,4 +1,4 @@
-package ru.petapp.hhbot.factory;
+package ru.petapp.hhbot.utils;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;

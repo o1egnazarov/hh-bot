@@ -1,4 +1,4 @@
-package ru.petapp.hhbot.service.handler;
+package ru.petapp.hhbot.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -8,10 +8,10 @@ import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
-import ru.petapp.hhbot.entity.UserEntity;
-import ru.petapp.hhbot.factory.KeyboardFactory;
+import ru.petapp.hhbot.repository.model.UserEntity;
+import ru.petapp.hhbot.utils.KeyboardFactory;
 import ru.petapp.hhbot.parser.VacancyParser;
-import ru.petapp.hhbot.service.HhService;
+import ru.petapp.hhbot.client.HhApiClient;
 import ru.petapp.hhbot.service.UserService;
 import ru.petapp.hhbot.telegram.bot.BotState;
 
@@ -23,7 +23,7 @@ import java.util.List;
 public class QueryHandler implements TelegramHandler {
     private final UserService userService;
     private final KeyboardFactory keyboardFactory;
-    private final HhService hhService;
+    private final HhApiClient hhApiClient;
     private final VacancyParser vacancyParser;
 
     @Override
@@ -103,65 +103,13 @@ public class QueryHandler implements TelegramHandler {
                 ))
                 .build();
 
-//        UserEntity userEntity = this.userService.getUserByChatId(message.getChatId());
-//
-//        if (userEntity == null) {
-//            userEntity = new UserEntity();
-//            userEntity.setId(message.getChatId());
-//            userEntity.setState(BotState.ASK_AREA);
-//            this.userService.saveUser(userEntity);
-//
-//            return this.sendMessage(message.getChatId(), "В каком городе ты бы хотел работать?");
-//        }
-
-
-//        BotState state = userEntity.getState();
-//
-//        switch (state) {
-//            case ASK_AREA -> {
-//                userEntity.setArea(messageText);
-//                userEntity.setState(BotState.ASK_EXPERIENCE);
-//                this.userService.saveUser(userEntity);
-//                return this.sendMessage(chatId, "Какой у тебя опыт работы?");
-//            }
-//            case ASK_EXPERIENCE -> {
-//                userEntity.setArea(messageText);
-//                userEntity.setState(BotState.ASK_SALARY);
-//                this.userService.saveUser(userEntity);
-//                sendMessage(chatId, "Какую бы хотел зарплату?");
-//            }
-//            case ASK_SALARY -> {
-//                userEntity.setArea(messageText);
-//                userEntity.setState(BotState.ASK_JOB_TITLE);
-//                this.userService.saveUser(userEntity);
-//                sendMessage(chatId, "Напиши название вакансии.");
-//            }
-//            case ASK_JOB_TITLE -> {
-//                userEntity.setArea(messageText);
-//                userEntity.setState(BotState.COMPLETED);
-//                this.userService.saveUser(userEntity);
-//                sendMessage(chatId, "Спасибо за ответы!");
-//            }
-//        }
-//
-//
-//        return SendMessage.builder()
-//                .chatId(chatId)
-//                .text(text)
-//                .replyMarkup(keyboardFactory.getInlineKeyboard(
-//                        List.of("В каком городе ты бы хотел работать?"),
-//                        List.of(1),
-//                        List.of("city")
-//                ))
-//                .build();
-
     }
 
     private BotApiMethod<?> getVacancies(long chatId, UserEntity user) {
 //        String json = this.hhService.getAreasId();
 //        String area = this.areaParser.searchAreasId(json, user)
 
-        String json = this.hhService.getVacancyByUserRequirement(user.getJobTitle());
+        String json = this.hhApiClient.getVacancyByUserRequirement(user.getJobTitle());
 
         try {
             return SendMessage.builder()

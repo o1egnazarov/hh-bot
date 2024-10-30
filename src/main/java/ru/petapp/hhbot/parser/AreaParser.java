@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-import ru.petapp.hhbot.dto.Area;
-import ru.petapp.hhbot.dto.AreaResponse;
+import ru.petapp.hhbot.parser.model.Area;
+import ru.petapp.hhbot.parser.model.AreaResponse;
 
 @Log4j2
 @Component
