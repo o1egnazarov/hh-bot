@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 
@@ -41,6 +42,9 @@ public class HandlerDispatcher {
         }
 
         log.warn("Unsupported update type {}", update);
-        return null;
+        return SendMessage.builder()
+                .chatId(update.getMessage().getChatId())
+                .text("К сожалению я не смогу обработать это сообщение.")
+                .build();
     }
 }

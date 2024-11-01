@@ -35,7 +35,15 @@ public class VacancyParser {
             }
 
             if (vacancy.getSalary() != null) {
-                stringBuilder.append("Зарплата: от %s до %s.\n".formatted(vacancy.getSalary().getFrom(), vacancy.getSalary().getTo()));
+                if (vacancy.getSalary().getFrom() == null) {
+                    stringBuilder.append("Зарплата: до %s.\n".formatted(vacancy.getSalary().getTo()));
+                }
+                if (vacancy.getSalary().getTo() == null) {
+                    stringBuilder.append("Зарплата: от %s.\n".formatted(vacancy.getSalary().getFrom()));
+                }
+                if (vacancy.getSalary().getFrom() != null && vacancy.getSalary().getTo() != null) {
+                    stringBuilder.append("Зарплата: от %s до %s.\n".formatted(vacancy.getSalary().getFrom(), vacancy.getSalary().getTo()));
+                }
             } else {
                 stringBuilder.append("Зарплата не указана.\n");
             }
