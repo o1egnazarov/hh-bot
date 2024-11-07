@@ -1,4 +1,4 @@
-package ru.petapp.hhbot.service;
+package ru.petapp.hhbot.handler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -7,17 +7,11 @@ import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
-import ru.petapp.hhbot.service.handler.CommandHandler;
-import ru.petapp.hhbot.service.handler.MessageHandler;
-import ru.petapp.hhbot.service.handler.QueryHandler;
-import ru.petapp.hhbot.service.handler.StickerHandler;
-
-import java.io.Serializable;
 
 @Log4j2
 @Component
 @RequiredArgsConstructor
-public class TgBotService {
+public class HandlerDispatcher {
 
     private final CommandHandler commandHandler;
     private final MessageHandler messageHandler;
@@ -32,7 +26,7 @@ public class TgBotService {
         if (update.hasMessage()) {
             Message message = update.getMessage();
 
-            if (message.hasSticker()){
+            if (message.hasSticker()) {
                 return this.stickerHandler.answer(update);
             }
 
@@ -48,6 +42,9 @@ public class TgBotService {
         }
 
         log.warn("Unsupported update type {}", update);
-        return null;
+        return SendMessage.builder()
+                .chatId(update.getMessage().getChatId())
+                .text("К сожалению я не смогу обработать это сообщение.")
+                .build();
     }
 }

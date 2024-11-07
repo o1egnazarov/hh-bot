@@ -1,16 +1,16 @@
-package ru.petapp.hhbot.entity;
+package ru.petapp.hhbot.repository.model;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import ru.petapp.hhbot.telegram.bot.BotState;
 
 @Getter
@@ -28,6 +28,10 @@ public class UserEntity {
     @Max(50)
     private String area;
 
+
+    @Column(name = "is_notify", columnDefinition = "boolean default false")
+    private Boolean isNotify = false;
+
     @NotNull
     @NotEmpty
     @Max(50)
@@ -36,7 +40,7 @@ public class UserEntity {
     @NotNull
     @NotEmpty
     @Max(50)
-    private Integer salary;
+    private Double salary;
 
     @NotNull
     @NotEmpty

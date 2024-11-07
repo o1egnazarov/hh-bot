@@ -1,4 +1,4 @@
-package ru.petapp.hhbot.service.handler.data;
+package ru.petapp.hhbot.handler.data;
 
 public enum CommandData {
     start,

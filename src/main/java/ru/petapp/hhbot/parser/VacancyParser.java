@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-import ru.petapp.hhbot.dto.Vacancy;
-import ru.petapp.hhbot.dto.VacancyResponse;
+import ru.petapp.hhbot.parser.model.Vacancy;
+import ru.petapp.hhbot.parser.model.VacancyResponse;
 
 @Log4j2
 @Component
@@ -35,7 +35,15 @@ public class VacancyParser {
             }
 
             if (vacancy.getSalary() != null) {
-                stringBuilder.append("Зарплата: от %s до %s.\n".formatted(vacancy.getSalary().getFrom(), vacancy.getSalary().getTo()));
+                if (vacancy.getSalary().getFrom() == null) {
+                    stringBuilder.append("Зарплата: до %s.\n".formatted(vacancy.getSalary().getTo()));
+                }
+                if (vacancy.getSalary().getTo() == null) {
+                    stringBuilder.append("Зарплата: от %s.\n".formatted(vacancy.getSalary().getFrom()));
+                }
+                if (vacancy.getSalary().getFrom() != null && vacancy.getSalary().getTo() != null) {
+                    stringBuilder.append("Зарплата: от %s до %s.\n".formatted(vacancy.getSalary().getFrom(), vacancy.getSalary().getTo()));
+                }
             } else {
                 stringBuilder.append("Зарплата не указана.\n");
             }

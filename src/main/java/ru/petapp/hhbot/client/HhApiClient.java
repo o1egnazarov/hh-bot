@@ -1,4 +1,4 @@
-package ru.petapp.hhbot.service;
+package ru.petapp.hhbot.client;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 @Log4j2
 @Setter
-public class HhService {
+public class HhApiClient {
     @Value("${hh.base-url}")
     private String baseUrl;
 
@@ -22,25 +22,23 @@ public class HhService {
 
     public final RestTemplate restTemplate = new RestTemplate();
 
-    public String getVacancyByUserRequirement(String text) {
+    public String getVacancyByUserRequirement(String text, String areaId) {
         var url = UriComponentsBuilder.fromHttpUrl(baseUrl + "/vacancies")
                 .queryParam("text", text)
-             //   .queryParam("area", area)
+                .queryParam("area", areaId)
                 .queryParam("per_page", 5)
                 .build()
                 .toUriString();
-
 //        var headers = new HttpHeaders();
 //        headers.add(headerName, headerValue);
 //        HttpEntity<String> entity = new HttpEntity<>(headers);
 //
 //        var response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 //        log.info( response.getHeaders());
-
         return restTemplate.getForObject(url, String.class);
     }
 
-    public String getAreasId() {
+    public String getAreasFromApi() {
         var url = UriComponentsBuilder.fromHttpUrl(baseUrl + "/areas")
                 .build()
                 .toUriString();
