@@ -1,12 +1,14 @@
 package ru.petapp.hhbot.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-import ru.petapp.hhbot.parser.model.Area;
 import ru.petapp.hhbot.parser.model.AreaResponse;
+
+import java.util.List;
 
 @Log4j2
 @Component
@@ -14,26 +16,45 @@ import ru.petapp.hhbot.parser.model.AreaResponse;
 public class AreaParser {
     private final ObjectMapper objectMapper;
 
-    public String searchAreasId(String json, String name) throws JsonProcessingException {
-        var areaResponse = this.objectMapper.readValue(json, AreaResponse.class);
-
-        return searchArea(name, areaResponse);
+    public List<AreaResponse> getAreas(String json) {
+        try {
+            return this.objectMapper.readValue(json, new TypeReference<List<AreaResponse>>() {
+            });
+        } catch (JsonProcessingException e) {
+            log.error(e);
+            return null;
+        }
     }
 
-    private String searchArea(String name, AreaResponse areaResponse) {
-        Area area = getAreaResponse(name, areaResponse);
-        return area.getId();
-    }
-
-    private Area getAreaResponse(String name, AreaResponse areaResponse) {
-        for (Area area : areaResponse.getAreas()) {
-            if (!area.getName().equalsIgnoreCase(name)) {
-                areaResponse.getAreas().removeIf(area1 -> !area1.getName().equalsIgnoreCase(name));
-                getAreaResponse(name, areaResponse);
+    private AreaResponse findByName(List<AreaResponse> parent, String name) {
+        for (AreaResponse area : parent) {
+            if (area.getName().equalsIgnoreCase(name)) {
+                return area;
             }
-            return area;
         }
 
+        for (AreaResponse area : parent) {
+            for (AreaResponse child: area.getAreas()){
+                AreaResponse result = findByName(child.getAreas(), name);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        log.warn("Invalid area name");
         return null;
+
+//        for (AreaResponse child : parent.getAreas()) {
+//            AreaResponse result = findByName(child, name);
+//            if (result != null) {
+//                return result;
+//            }
+//        }
+    }
+
+    public String getAreaId(String name, String json) {
+        List<AreaResponse> areas = this.getAreas(json);
+        var areaResponse = this.findByName(areas, name);
+        return areaResponse != null ? areaResponse.getId() : null;
     }
 }

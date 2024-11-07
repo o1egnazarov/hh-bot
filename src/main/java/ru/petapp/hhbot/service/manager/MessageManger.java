@@ -40,7 +40,7 @@ public class MessageManger {
                 return this.sendMessage(chatId, "Опыт: %s введен успешно!".formatted(messageText));
             }
             case ASK_SALARY -> {
-                userEntity.setSalary(Integer.valueOf(messageText));
+                userEntity.setSalary(Double.valueOf(messageText));
                 userEntity.setState(BotState.ASK_JOB_TITLE);
                 this.userService.saveUser(userEntity);
                 return this.sendMessage(chatId, "Зарплата: %s введена успешно!".formatted(messageText));

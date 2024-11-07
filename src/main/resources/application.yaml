@@ -12,8 +12,19 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: hh-bot
+
+    user: postgres
+    password: ${db-password}
+    url: jdbc:postgresql://localhost:5432/postgres
+
+
 
 hh:
   base-url: "https://api.hh.ru"

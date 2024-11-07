@@ -19,8 +19,10 @@ public class HhBot implements SpringLongPollingBot, LongPollingSingleThreadUpdat
     private final HandlerDispatcher handlerDispatcher;
 
 
-    public HhBot(TelegramProperties telegramProperties,
-                 HandlerDispatcher handlerDispatcher) {
+    public HhBot(
+            TelegramProperties telegramProperties,
+            HandlerDispatcher handlerDispatcher
+    ) {
         this.telegramProperties = telegramProperties;
         this.telegramClient = new OkHttpTelegramClient(getBotToken());
         this.handlerDispatcher = handlerDispatcher;
@@ -46,10 +48,5 @@ public class HhBot implements SpringLongPollingBot, LongPollingSingleThreadUpdat
             log.error(e.getMessage());
         }
     }
-
 }
-//    @AfterBotRegistration
-//    public void afterRegistration(BotSession botSession) {
-//        log.info("Registered bot running state is: " + botSession.isRunning());
-//    }
-//}
+
